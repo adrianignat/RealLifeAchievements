@@ -9,8 +9,41 @@
     tools:context=".MainActivity" >
 
     <TextView
+        android:id="@+id/UserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Adrian Ignat"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/UserLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/UserName"
+        android:layout_below="@+id/UserName"
+        android:text="Lvl: 1"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/ShowMapButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/UserLevel"
+        android:layout_below="@+id/UserLevel"
+        android:layout_marginTop="64dp"
+        android:onClick="ViewMapButtonClick"
+        android:text="@string/ViewMapButtonText" />
+
+    <Button
+        android:id="@+id/Achivements"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/ShowMapButton"
+        android:layout_alignBottom="@+id/ShowMapButton"
+        android:layout_alignParentRight="true"
+        android:text="@string/AchievementsButtonText"
+        android:onClick="AchievementsButtonClick" />
 
 </RelativeLayout>
