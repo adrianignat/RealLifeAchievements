@@ -2,8 +2,16 @@ package com.example.reallifeachievements;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Activity;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +25,18 @@ public class ViewMapActivity extends Activity {
 		setContentView(R.layout.activity_view_map);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		getUserLocation();
+	}
+
+	private void getUserLocation() {
+		
+		GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+				.getMap();
+		
+		MapHelper mapHelper = new MapHelper(this, map);
+		
+		mapHelper.getUserLocation();
 	}
 
 	/**
