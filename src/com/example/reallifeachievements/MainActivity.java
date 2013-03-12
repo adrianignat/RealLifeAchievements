@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 	
 	public void AchievementsButtonClick(View view)
 	{
-		Intent intent = new Intent(this, ViewAchievementsActivity.class);		
+		Intent intent = new Intent(this, TestGetPosition.class);		
 		
 		startActivity(intent);
 	}

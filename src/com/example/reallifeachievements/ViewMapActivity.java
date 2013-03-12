@@ -1,5 +1,6 @@
 package com.example.reallifeachievements;
 
+import com.example.reallifeachievements.LocationHelper.LocationResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.GoogleMap;
@@ -13,11 +14,23 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 public class ViewMapActivity extends Activity {
+	
+	private GoogleMap map;
+	private MapHelper mapHelper;
+	LocationHelper locationHelper;
+	LocationResult locationResult = new LocationResult(){
+	    @Override
+	    public void locationUpdated(Location location){
+	        drawLocation(location);
+	    }		
+	};		
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +39,23 @@ public class ViewMapActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		getUserLocation();
+		initialize();
 	}
 
-	private void getUserLocation() {
-		
-		GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+	private void initialize() {
+		map = getMap();
+		mapHelper = new MapHelper(map);
+		locationHelper = new LocationHelper();
+	}
+	
+	private void drawLocation(final Location location)
+	{
+		mapHelper.drawLocationOnMainThread(location);				
+	}
+
+	private GoogleMap getMap() {
+		return ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
-		
-		MapHelper mapHelper = new MapHelper(this, map);
-		
-		mapHelper.getUserLocation();
 	}
 
 	/**
@@ -81,6 +100,16 @@ public class ViewMapActivity extends Activity {
 		
 		if (playServiceAvailability != ConnectionResult.SUCCESS)
 			GooglePlayServicesUtil.getErrorDialog(playServiceAvailability, this, 0);
+		
+		locationHelper.startTrackingPosition(this, locationResult);
+	}
+	
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		
+		locationHelper.stopTrackingPosition();
 	}
 
 }

@@ -1,41 +1,48 @@
 package com.example.reallifeachievements;
 
-import com.example.reallifeachievements.LocationHelper.LocationResult;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import android.content.Context;
 import android.location.Location;
+import android.os.Handler;
+import android.os.Looper;
 
-public class MapHelper {	
-
-	Context context;
-	GoogleMap map;
+public class MapHelper {
 	
-	LocationResult locationResult = new LocationResult(){
-	    @Override
-	    public void gotLocation(Location location){
-	        drawLocation(location);
-	    }		
-	};	
+	private GoogleMap map;		
 	
-	public MapHelper(Context context, GoogleMap map) {
-		this.context = context;
+	public MapHelper(GoogleMap map) {		
 		this.map = map;
+	}		
+	
+	public void drawLocationOnMainThread(final Location location) {
+		
+		Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+		
+		mainThreadHandler.post(new Runnable(){
+			@Override
+			public void run() {
+				drawLocation(location);
+			}
+		});				    
 	}
 	
-	public void getUserLocation(){
-		LocationHelper location = new LocationHelper();
-		location.getLocation(context, locationResult);		
-	}
-	
-	private void drawLocation(Location location) {
+	private void drawLocation(Location location){
 		LatLng userPosition = new LatLng(location.getLatitude(), location.getLongitude());
 		
 		map.addMarker(new MarkerOptions().position(userPosition)
 				.title("You are here!"));
 		
+		zoomIntoPosition(userPosition);
+	}
+	
+	public void zoomIntoPosition(LatLng position)
+	{
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
+
+		//Zoom in, animating the camera.
+		map.animateCamera(CameraUpdateFactory.zoomTo(20), 2000, null);
 	}
 }

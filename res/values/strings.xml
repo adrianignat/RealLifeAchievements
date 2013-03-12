@@ -8,5 +8,6 @@
     <string name="title_activity_view_map">Map</string>
     <string name="AchievementsButtonText">Achievements</string>
     <string name="title_activity_view_achievements">ViewAchievementsActivity</string>
+    <string name="title_activity_test_get_position">TestGetPosition</string>
 
 </resources>
