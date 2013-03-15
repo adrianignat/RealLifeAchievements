@@ -24,7 +24,10 @@ public class ViewMapActivity extends Activity {
 	
 	private GoogleMap map;
 	private MapHelper mapHelper;
+	private boolean bUserPositionInView = false;
+	
 	LocationHelper locationHelper;
+	
 	LocationResult locationResult = new LocationResult(){
 	    @Override
 	    public void locationUpdated(Location location){
@@ -50,7 +53,14 @@ public class ViewMapActivity extends Activity {
 	
 	private void drawLocation(final Location location)
 	{
-		mapHelper.drawLocationOnMainThread(location);				
+		mapHelper.drawLocationOnMainThread(location);		
+		
+		LatLng userPosition = new LatLng(location.getLatitude(), location.getLongitude());
+		
+		if (!bUserPositionInView){
+			mapHelper.zoomIntoPositionOnMainThread(userPosition);
+			bUserPositionInView = true;
+		}								
 	}
 
 	private GoogleMap getMap() {
